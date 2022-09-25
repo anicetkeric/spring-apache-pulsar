@@ -1,0 +1,10 @@
+server:
+  port: 8082
+
+# Pulsar Consumer properties
+pulsar:
+  consumer:
+    url: pulsar://localhost:6650
+    topic: notification-topic
+    # specify the unique name of your subscription
+    subscription-name: notification_sender
