@@ -1,1 +1,1 @@
-# spring-apache-pulsar
+# Apache Pulsar consumer and producer with Spring Boot
