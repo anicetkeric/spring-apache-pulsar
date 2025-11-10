@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.example</groupId>
     <artifactId>spring-pulsar-producer</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
     <name>spring-pulsar-producer</name>
     <description>spring-pulsar-producer</description>
     <properties>
