@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 
 /**
@@ -39,7 +39,7 @@ public class NewsletterController {
      * @param newsletter the newsletter to create.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new newsletter.
      */
-	@PostMapping()
+	@PostMapping
 	public ResponseEntity<Newsletter> createNewsletter(@RequestBody @Valid NewsletterDTO newsletter) {
          log.debug("REST request to save Newsletter : {}", newsletter);
          return new ResponseEntity<>(entityService.sendNewsletter(newsletter), HttpStatus.CREATED);

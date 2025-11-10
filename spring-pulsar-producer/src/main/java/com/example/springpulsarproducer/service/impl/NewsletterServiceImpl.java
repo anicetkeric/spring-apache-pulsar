@@ -10,8 +10,8 @@ import com.example.springpulsarproducer.service.NewsletterService;
 import com.example.springpulsarproducer.service.NewsletterSubscriberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.pulsar.client.api.Producer;
 import org.apache.pulsar.shade.org.apache.commons.lang3.ObjectUtils;
+import org.springframework.pulsar.core.PulsarTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +30,8 @@ public class NewsletterServiceImpl implements NewsletterService {
 
     private final NewsletterRepository repository;
     private final NewsletterSubscriberService newsletterSubscriberService;
-    private final Producer<Notification> producer;
+
+    private final PulsarTemplate<Object> pulsarTemplate;
 
     /**
      * {@inheritDoc}
@@ -75,6 +76,6 @@ public class NewsletterServiceImpl implements NewsletterService {
      * Pulsar publish messages asynchronously using the Java client
      */
     private void sendMsgAsync(Notification notification) {
-        producer.sendAsync(notification).thenAccept(msgId -> log.info("Notification message with ID {} successfully sent", msgId));
+        pulsarTemplate.sendAsync(notification).thenAccept(msgId -> log.info("Notification message with ID {} successfully sent", msgId));
     }
 }

@@ -3,7 +3,7 @@ package com.example.springpulsarproducer.entities;
 import lombok.*;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 /**
  * JPA entity class for "NewsletterSubscriber"

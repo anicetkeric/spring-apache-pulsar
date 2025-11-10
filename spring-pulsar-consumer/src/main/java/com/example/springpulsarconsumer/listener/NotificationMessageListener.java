@@ -4,16 +4,21 @@ package com.example.springpulsarconsumer.listener;
 import com.example.springpulsarconsumer.model.Notification;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.pulsar.client.api.Consumer;
 import org.apache.pulsar.client.api.Message;
-import org.apache.pulsar.client.api.MessageListener;
+import org.apache.pulsar.client.api.SubscriptionType;
+import org.springframework.pulsar.annotation.PulsarListener;
+import org.springframework.pulsar.listener.AckMode;
+import org.springframework.pulsar.listener.Acknowledgement;
 import org.springframework.stereotype.Component;
 
-@Component
 @Slf4j
-public class NotificationMessageListener implements MessageListener<Notification> {
-    @Override
-    public void received(Consumer<Notification> consumer, Message<Notification> msg) {
+@Component
+public class NotificationMessageListener{
+
+    @PulsarListener(
+            ackMode = AckMode.MANUAL,
+            subscriptionType = SubscriptionType.Shared)
+    public void received(Message<Notification> msg, Acknowledgement ack) {
         try {
             log.info("Topic Name: {}", msg.getTopicName());
             log.info("Message Id: {}", msg.getMessageId());
@@ -26,9 +31,10 @@ public class NotificationMessageListener implements MessageListener<Notification
                     notification.getRecipientEmail(), notification.getSubject(), StringUtils.abbreviate(notification.getContent(), 100));
 
             log.info("####################################################################################");
-            consumer.acknowledge(msg);
+            ack.acknowledge(msg.getMessageId());
         } catch (Exception e) {
-            consumer.negativeAcknowledge(msg);
+            ack.nack();
         }
     }
+
 }

@@ -1,18 +1,22 @@
+server:
+  port: 8081
+
 spring:
   sql:
     init:
-      mode: never
+      mode: ALWAYS
   application:
-    name: book-microservice
+    name: apache-pulsar-spring-boot
   jpa:
     open-in-view: false
     database-platform: org.hibernate.dialect.PostgreSQLDialect
-    show-sql: false
+    defer-datasource-initialization: true
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
     hibernate:
-      ddl-auto: none
-      naming:
-        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
-        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+      ddl-auto: 'create-drop'
   datasource:
     driver-class-name: org.postgresql.Driver
     username: dev
@@ -21,13 +25,15 @@ spring:
     hikari:
       poolName: Hikari
       auto-commit: false
-
-server:
-  port: 8081
-
-# Pulsar Producer properties
-pulsar:
-  producer:
-    url: pulsar://localhost:6650
-    topic: notification-topic
-    producer-name: notification_sender
+  pulsar:
+    client:
+      operation-timeout: 30m
+      service-url: pulsar://127.0.0.1:6650
+      # pulsar This configuration is not required if no password has been set.
+      authentication:
+        plugin-class-name: org.apache.pulsar.client.impl.auth.AuthenticationToken
+        param:
+          token: GeneratedTokenValue
+    producer:
+      topic-name: notification-topic
+      name: notification_sender
